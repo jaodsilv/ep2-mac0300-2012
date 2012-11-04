@@ -1,0 +1,2 @@
+function c = contrast(image)
+

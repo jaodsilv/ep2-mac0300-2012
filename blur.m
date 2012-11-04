@@ -1,0 +1,1 @@
+function b = blur(image)
