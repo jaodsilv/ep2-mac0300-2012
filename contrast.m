@@ -1,33 +1,50 @@
-function c = contrast(image, outputName)
-hl = size(image);
-c = zeros(hl(1), hl(2));
-n = hl(1) * hl(2);
+function contrast(f, outputName)
+  hl = size(f);
+  h = hx(f, hl);
 
-px = zeros(1, 256);
-fdax = zeros(1, 256);
-hx = zeros(1, 256);
-minimum = 0;
+  g = setImage(f, h, hl);
+  imwrite(g, outputName);
+endfunction
 
-for i = [1:hl(1)]
-  for j = [1:hl(2)]
-    px(image(i, j)+1)++;
+function h = hx(f, hl)
+  n = hl(1) * hl(2);
+
+  p = px(f, hl);
+  [fda, minimum] = fdax(p);
+
+  h = fda-minimum;
+  h = round((h/(n-minimum))*255);
+endfunction
+
+function p = px(f, hl)
+  p = zeros(1, 256);
+
+  for i = [1:hl(1)]
+    for j = [1:hl(2)]
+      p(f(i, j)+1)++;
+    endfor
   endfor
-endfor
-for i = [1:256]
-  for j = [1:i]
-    fdax(i) += px(j);
-  endfor
-  if (minimum >0 && fdax(i) > 0)
-    minimum = fdax(i);
-  end
-endfor
+endfunction
 
-hx = fdax-minimum;
+function [fda, minimum] = fdax(p)
+  fda = zeros(1, 256);
+  minimum = 0;
 
-hx = round((hx/(n-minimum))*255);
-for i = [1:hl(1)]
-  for j = [1:hl(2)]
-    image(i, j) = hx(image(i,j)+1);
+  for i = [1:256]
+    for j = [1:i]
+      fda(i) += p(j);
+    endfor
+    if (minimum >0 && fda(i) > 0)
+      minimum = fda(i);
+    endif
   endfor
-endfor
-imwrite(image, outputName);
+endfunction
+
+function g = setImage(f, h, hl)
+  g = f;
+  for i = [1:hl(1)]
+    for j = [1:hl(2)]
+      g(i, j) = h(f(i,j)+1);
+    endfor
+  endfor
+endfunction
