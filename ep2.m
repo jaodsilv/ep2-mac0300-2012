@@ -3,7 +3,7 @@ if (size(argv())(1) != 2)
 else
   option = argv(){1};
   imageName = argv(){2};
-  imagem = uint8(imread(imageName));
+  imagem = imread(imageName);
   outputName = strrep(imageName, ".", "-final.");
 
   if (strcmp(option, "-contrast"))

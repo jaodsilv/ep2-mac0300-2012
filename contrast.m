@@ -3,6 +3,10 @@ function contrast(f, outputName)
   h = hx(f, hl);
 
   g = setImage(f, h, hl);
+
+  bar([0:255], px(g, hl));
+  print -dpdf histAfter.pdf;
+
   imwrite(g, outputName);
 endfunction
 
@@ -10,6 +14,10 @@ function h = hx(f, hl)
   n = hl(1) * hl(2);
 
   p = px(f, hl);
+
+  bar([0:255], p);
+  print -dpdf histBefore.pdf;
+
   [fda, minimum] = fdax(p);
 
   h = fda-minimum;

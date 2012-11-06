@@ -1,7 +1,7 @@
 function g = convol(f, w)
 
   hl = size(f);
-  g = f;
+  g = zeros(hl(1),hl(2));
 
   for x = [2:hl(1)-1]
     for y = [2:hl(2)-1]
